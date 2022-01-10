@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #app {
+        width: 50%;
+        height: 200px;
+        line-height: 200px;
+        text-align: center;
+        margin: 0 auto;
+        background-color: skyblue;
+        font-size: 32px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">app元素</div>
+    <script>
+      document.getElementById('app').addEventListener(
+        'click',
+        function () {
+          alert('点击了app元素0');
+        },
+        false
+      );
+      document.getElementById('app').addEventListener(
+        'click',
+        function () {
+          alert('点击了app元素1');
+        },
+        false
+      );
+      document.getElementById('app').addEventListener(
+        'click',
+        function () {
+          alert('点击了app元素2');
+        },
+        false
+      );
+    </script>
+  </body>
+</html>
