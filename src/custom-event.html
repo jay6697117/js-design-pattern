@@ -8,55 +8,61 @@
   </head>
   <body>
     <script>
-      const saleOffices = {}; //发布者
-      saleOffices.clientList = {}; //订阅者清单
-
-      //添加订阅
-      saleOffices.$add = function (key, fn) {
-        // console.log('$add this:', this);
-        // console.log('$add key', key);
-        // console.log('$add fn', fn);
-        if (!this.clientList[key]) {
-          this.clientList[key] = [];
-        }
-        this.clientList[key].push(fn);
-      };
-
-      // 发布订阅
-      saleOffices.$publish = function () {
-        console.log('$publish this:', this);
-        console.log('$publish arguments', arguments);
-        const argsTotal = [...arguments];
-        const key = argsTotal[0];
-        const args = argsTotal.slice(1);
-        console.log('$publish key', key);
-        console.log('$publish args:', args);
-        const clientFns = this.clientList[key];
-        console.log('$publish clientFns:', clientFns);
-        for (let index = 0; index < clientFns.length; index++) {
-          const fn = clientFns[index];
-          fn.apply(this, [...args]);
+      // 发布者
+      const event = {
+        // 订阅者清单
+        clientList: {},
+        // 添加订阅
+        $add: function (key, fn) {
+          if (!this.clientList[key]) {
+            this.clientList[key] = [];
+          }
+          this.clientList[key].push(fn);
+        },
+        // 发布订阅
+        $publish: function () {
+          const argsTotal = [...arguments];
+          const key = argsTotal[0];
+          const args = argsTotal.slice(1);
+          const clientFns = this.clientList[key];
+          for (let index = 0; index < clientFns.length; index++) {
+            const fn = clientFns[index];
+            fn.apply(this, [...args]);
+          }
         }
       };
+      console.log('event', event);
+
+      const initEvent = function (obj) {
+        for (const key in event) {
+          if (Object.hasOwnProperty.call(event, key)) {
+            obj[key] = event[key];
+          }
+        }
+      };
+
+      const anotherOffices = {};
+      initEvent(anotherOffices);
+      console.log('anotherOffices', anotherOffices);
 
       // 订阅
-      saleOffices.$add('add', function (x, y) {
-        console.log('this', this);
-        console.log('$on1 x:', x);
-        console.log('$on1 y:', y);
+      anotherOffices.$add('add', function (x, y) {
+        console.log('add this:', this);
+        // console.log('$on1 x:', x);
+        // console.log('$on1 y:', y);
         console.log('add结果:', x + y);
       });
-      saleOffices.$add('multiply', function (x, y) {
-        console.log('this', this);
-        console.log('$on1 x:', x);
-        console.log('$on1 y:', y);
+      anotherOffices.$add('multiply', function (x, y) {
+        console.log('multiply this:', this);
+        // console.log('$on1 x:', x);
+        // console.log('$on1 y:', y);
         console.log('multiply结果:', x * y);
       });
       // 发布
       console.log('------------------------------------');
-      saleOffices.$publish('add', 1, 2);
+      anotherOffices.$publish('add', 5, 10);
       console.log('------------------------------------');
-      saleOffices.$publish('multiply', 5, 6);
+      anotherOffices.$publish('multiply', 5, 6);
     </script>
   </body>
 </html>
